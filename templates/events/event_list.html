@@ -1,0 +1,17 @@
+{% extends 'base.html' %}
+{% block content %}
+  <div class="neon-box">
+    <h1>Upcoming Events</h1>
+    {% for event in events %}
+      <div class="neon-box">
+        <h3>{{ event.title }}</h3>
+        <p><strong>Date:</strong> {{ event.date }}</p>
+        <p><strong>Location:</strong> {{ event.location }}</p>
+        <p>{{ event.description }}</p>
+      </div>
+    {% empty %}
+      <p>No events found.</p>
+    {% endfor %}
+   <a href="{% url 'admin:events_event_add' %}" class="btn btn-neon">Create Event</a>
+</div>
+{% endblock %}
