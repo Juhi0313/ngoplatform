@@ -9,11 +9,11 @@ from .forms import NGOForm, EventForm, EventFilterForm
 
 # Create your views here.
 def event_list(request):
-    events = Event.objects.all().select_related('ngo')
-    form = EventFilterForm(request.GET)
+   events = Event.objects.filter(date_time__gte=timezone.now()).select_related('ngo')
+   form = EventFilterForm(request.GET)
     
    
-    if form.is_valid():
+   if form.is_valid():
         city = form.cleaned_data.get('city')
         state = form.cleaned_data.get('state')
         
@@ -23,21 +23,21 @@ def event_list(request):
             events = events.filter(state__icontains=state)
 
 # Page.
-    paginator = Paginator(events, 12)
-    page_number = request.GET.get('page')
-    page_obj = paginator.get_page(page_number)
+   paginator = Paginator(events, 12)
+   page_number = request.GET.get('page')
+   page_obj = paginator.get_page(page_number)
 
-    cities = Event.objects.values_list('city', flat=True).distinct()
-    states = Event.objects.values_list('state', flat=True).distinct()
+   cities = Event.objects.values_list('city', flat=True).distinct()
+   states = Event.objects.values_list('state', flat=True).distinct()
     
-    context = {
+   context = {
         'page_obj': page_obj,
         'form': form,
         'cities': cities,
         'states': states,
         'total_events': events.count(),
     }
-    return render(request, 'events/event_list.html', context)
+   return render(request, 'events/event_list.html', context)
 
 def event_detail(request, pk):
     event = get_object_or_404(Event, pk=pk)

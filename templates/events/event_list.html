@@ -2,16 +2,38 @@
 {% block content %}
   <div class="neon-box">
     <h1>Upcoming Events</h1>
-    {% for event in events %}
+    {% for event in page_obj %}
       <div class="neon-box">
         <h3>{{ event.title }}</h3>
-        <p><strong>Date:</strong> {{ event.date }}</p>
+        <p><strong>Date:</strong> {{ event.date_time }}</p>
         <p><strong>Location:</strong> {{ event.location }}</p>
         <p>{{ event.description }}</p>
       </div>
     {% empty %}
       <p>No events found.</p>
     {% endfor %}
-   <a href="{% url 'admin:events_event_add' %}" class="btn btn-neon">Create Event</a>
-</div>
+
+    <!-- Pagination  -->
+    {% if page_obj.has_other_pages %}
+      <nav aria-label="Page navigation">
+        <ul class="pagination justify-content-center mt-4">
+          {% if page_obj.has_previous %}
+            <li class="page-item">
+              <a class="page-link" href="?page={{ page_obj.previous_page_number }}">Previous</a>
+            </li>
+          {% endif %}
+          <li class="page-item disabled">
+            <span class="page-link">Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}</span>
+          </li>
+          {% if page_obj.has_next %}
+            <li class="page-item">
+              <a class="page-link" href="?page={{ page_obj.next_page_number }}">Next</a>
+            </li>
+          {% endif %}
+        </ul>
+      </nav>
+    {% endif %}
+
+    <a href="{% url 'event_create' %}" class="btn btn-neon">Create Event</a>
+  </div>
 {% endblock %}
