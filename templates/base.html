@@ -87,16 +87,21 @@
   </li>
   <li class="nav-item">
     <a class="nav-link" href="{% url 'event_create' %}">Add Event</a>
-  </li>
-  {% if user.is_authenticated %}
+ </li>
+{% if user.is_authenticated %}
   <li class="nav-item">
-    <a class="nav-link" href="{% url 'logout' %}">Logout</a>
+    <form method="POST" action="{% url 'admin_logout' %}">
+      {% csrf_token %}
+      <button type="submit" class="btn btn-link nav-link" style="padding: 0; border: none; background: none;">
+        Logout
+      </button>
+    </form>
   </li>
-  {% else %}
+{% else %}
   <li class="nav-item">
-    <a class="nav-link" href="{% url 'login' %}">Login</a>
+    <a class="nav-link" href="{% url 'admin_login' %}">Login</a>
   </li>
-  {% endif %}{% endspaceless %}
+ {% endif %}{% endspaceless %}
 </ul>
 
 

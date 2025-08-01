@@ -20,7 +20,8 @@ from django.conf import settings
 from django.conf.urls.static import static
 
 urlpatterns = [
-    path('admin/', admin.site.urls),
-    path('', include('events.urls')),
+    path('admin/', admin.site.urls),  # This is the Django admin panel
+    path('', include('events.urls')),  # This is your app’s URLs
     path('accounts/', include('django.contrib.auth.urls')),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+
